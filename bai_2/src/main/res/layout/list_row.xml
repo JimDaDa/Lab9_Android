@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center|start">
+    android:background="#EFEFEF"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
     <ImageView
-        android:id="@+id/imgv_thumb"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:padding="10dp"
-        android:src="@drawable/headphones"
-        />
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:id="@+id/icon_view"
+        android:layout_centerVertical="true"
+        android:src="@drawable/headphones"/>
 
     <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_marginLeft="10dp"
-        android:textStyle="bold"
-        android:text="File Name"/>
+        android:layout_centerVertical="true"
+        android:id="@+id/music_title_text"
+        android:layout_toEndOf="@id/icon_view"
+        android:padding="10dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="Music"
+        android:textColor="@color/black"/>
 
-</LinearLayout>
+</RelativeLayout>

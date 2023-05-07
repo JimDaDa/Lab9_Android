@@ -6,18 +6,32 @@ import androidx.annotation.RequiresApi;
 import java.util.Objects;
 
 public class MediaFile implements Serializable {
-    private String name;
-    private String path;
+    String path;
+    String title;
+    String duration;
 
     public MediaFile() {
     }
-
-    public String getName() {
-        return name;
+    public MediaFile(String path, String title, String duration) {
+        this.path = path;
+        this.title = title;
+        this.duration = duration;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
     public String getPath() {
@@ -28,32 +42,6 @@ public class MediaFile implements Serializable {
         this.path = path;
     }
 
-    @RequiresApi(api = VERSION_CODES.KITKAT)
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        MediaFile mediaFile = (MediaFile) o;
-        return Objects.equals(name, mediaFile.name) &&
-                Objects.equals(path, mediaFile.path);
-    }
 
-    @RequiresApi(api = VERSION_CODES.KITKAT)
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, path);
-    }
-
-    @Override
-    public String toString() {
-        return "MediaFile{" +
-                "name='" + name + '\'' +
-                ", path='" + path + '\'' +
-                '}';
-    }
 
 }

@@ -2,22 +2,25 @@ package com.example.bai_2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MediaFileAdaptor  extends RecyclerView.Adapter<MediaFileAdaptor.MyViewHolder>{
-    int mPosition;
-    private Context context;
-    private List<MediaFile> mMediaList;
+    ArrayList<MediaFile> songsList;
+    Context context;
 
-    public MediaFileAdaptor(Context context) {
+    public MediaFileAdaptor(ArrayList<MediaFile> songsList, Context context) {
+        this.songsList = songsList;
         this.context = context;
     }
 
@@ -31,48 +34,51 @@ public class MediaFileAdaptor  extends RecyclerView.Adapter<MediaFileAdaptor.MyV
 
     @Override
     public void onBindViewHolder(@NonNull MediaFileAdaptor.MyViewHolder holder, int position) {
-        MediaFile df = mMediaList.get(position);
-        holder.name.setText(df.getName());
+        MediaFile songData = songsList.get(position);
+        holder.titleTextView.setText(songData.getTitle());
+
+        if(MyMediaPlayer.currentIndex==position){
+            holder.titleTextView.setTextColor(Color.parseColor("#FF0000"));
+        }else{
+            holder.titleTextView.setTextColor(Color.parseColor("#000000"));
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //navigate to another acitivty
+
+                MyMediaPlayer.getInstance().reset();
+                MyMediaPlayer.currentIndex = position;
+                Intent intent = new Intent(context,Play_Activity.class);
+                intent.putExtra("LIST",songsList);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+
+            }
+        });
+
 
     }
 
     @Override
     public int getItemCount() {
-        if (mMediaList == null) {
-            return 0;
-        }
-        return mMediaList.size();
-    }
-    public void setData(List<MediaFile> downloadedFileList) {
-        mMediaList = downloadedFileList;
-        notifyDataSetChanged();
+        return songsList.size();
     }
 
-    public List<MediaFile> getEvents() {
-        return mMediaList;
-    }
-
-    public void setPosition(int position) {
-        mPosition = position;
-    }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name;
+
+        TextView titleTextView;
+        ImageView iconImageView;
 
         MyViewHolder(@NonNull final View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.tv_name);
+            titleTextView = itemView.findViewById(R.id.music_title_text);
+            iconImageView = itemView.findViewById(R.id.icon_view);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent newActivity = new Intent(context, Play_Activity.class);
-                    newActivity.putExtra("vMusicName", mMediaList.get(getAdapterPosition()).getName());
-                    newActivity.putExtra("vMusicPath", mMediaList.get(getAdapterPosition()).getPath());
-                    context.startActivity(newActivity);
-                }
-            });
+
         }
     }
 
