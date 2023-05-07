@@ -24,6 +24,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.Manifest;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,41 +50,43 @@ public class Bai1 extends AppCompatActivity {
         checkNetworkConnection();
 
         new LoadContentFromServer().execute();
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                } else {
-
-                }
-                return;
-            }
-
-
+        if(checkPermission() == false){
+            requestPermission();
+            return;
         }
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DIALOG_DOWNLOAD_THUMBNAIL_PROGRESS:
-                mProgressDialog = new ProgressDialog(this);
-                mProgressDialog.setMessage("Downloading Thumbnail.....");
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                mProgressDialog.setCancelable(true);
-                mProgressDialog.show();
-                return mProgressDialog;
-            default:
-                return null;
+    boolean checkPermission(){
+        int result = ContextCompat.checkSelfPermission(Bai1.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if(result == PackageManager.PERMISSION_GRANTED){
+            return true;
+        }else{
+            return false;
         }
     }
+
+    void requestPermission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(Bai1.this,Manifest.permission.READ_EXTERNAL_STORAGE)){
+            Toast.makeText(Bai1.this,"READ PERMISSION IS REQUIRED,PLEASE ALLOW FROM SETTTINGS",Toast.LENGTH_SHORT).show();
+        }else
+            ActivityCompat.requestPermissions(Bai1.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},123);
+    }
+
+
+//    @Override
+//    protected Dialog onCreateDialog(int id) {
+////        switch (id) {
+////            case DIALOG_DOWNLOAD_THUMBNAIL_PROGRESS:
+////                mProgressDialog = new ProgressDialog(this);
+////                mProgressDialog.setMessage("Downloading Thumbnail.....");
+////                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+////                mProgressDialog.setCancelable(true);
+////                mProgressDialog.show();
+////                return mProgressDialog;
+////            default:
+////                return null;
+////        }
+//    }
 
     @Override
     protected void onResume() {
@@ -195,8 +198,8 @@ public class Bai1 extends AppCompatActivity {
         @Override
         protected void onPostExecute(Object result) {
             showThumbnailData();
-            dismissDialog(DIALOG_DOWNLOAD_THUMBNAIL_PROGRESS);
-            removeDialog(DIALOG_DOWNLOAD_THUMBNAIL_PROGRESS);
+            //dismissDialog(DIALOG_DOWNLOAD_THUMBNAIL_PROGRESS);
+           // removeDialog(DIALOG_DOWNLOAD_THUMBNAIL_PROGRESS);
         }
     }
 
