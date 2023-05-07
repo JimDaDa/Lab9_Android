@@ -13,4 +13,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Lab9_51900491_CaoNguyenKyDuyen"
-include ':app'
+include ':bai_1'
+include ':bai_2'
